@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="filePath" value="/data0/log-data/course-match-backend"/>
+<!--    <property name="filePath" value="/Users/cheney/WorkSpace/Log/data0/log-data/course-match-backend"/>-->
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>${pattern}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${filePath}/course-match-backend.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${filePath}/course-match-backend.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>${pattern}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="monitorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>/data0/log-data/monitor.log</File>
+<!--        <File>/Users/cheney/WorkSpace/Log/data0/log-data/monitor.log</File>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/data0/log-data/monitor.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>2</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.codingpedia" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+    <logger name="com.hupuarena.msvfoundation.log.MsvLog" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+
+    <root>
+        <level value="info"/>
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="monitorAppender"/>
+        <appender-ref ref="dailyRollingFileAppender"/>
+    </root>
+</configuration>
